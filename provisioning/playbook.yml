@@ -1,0 +1,7 @@
+---
+
+- name: Setup AMBuild VM
+  hosts: ambuild
+  user: vagrant
+  roles:
+    - ambuild
