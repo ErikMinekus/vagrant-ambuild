@@ -5,3 +5,4 @@
   user: vagrant
   roles:
     - ambuild
+  gather_facts: false

@@ -1,5 +1,9 @@
 ---
 
+- name: Installing Python 2.7
+  raw: test -e /usr/bin/python || (apt update -y && apt install -y python-minimal)
+  become: true
+
 - name: Set hostname
   hostname: name={{ hostname }}
   become: true
@@ -8,30 +12,17 @@
   apt: update_cache=yes
   become: true
 
-- name: Setup Git 2 repository
-  apt_repository: repo=ppa:git-core/ppa
-  become: true
-
-- name: Setup GCC 4.8 repository
-  apt_repository: repo=ppa:ubuntu-toolchain-r/test
-  become: true
-
-- name: Setup Clang 3.2 repository
-  apt_repository: repo=ppa:kxstudio-team/builds
-  become: true
-
 - name: Installing base packages
   apt: state=latest name={{ item }}
   become: true
   with_items:
     - git
-    - gcc-4.8
-    - g++-4.8
+    - gcc
+    - g++
     - clang
-    - python3-minimal
     - vim
 
 - name: Cloning SourceMod repository
   git: repo=https://github.com/alliedmodders/sourcemod.git
-       dest=/home/vagrant/sourcemod
+       dest=/home/ubuntu/sourcemod
        version={{ sourcemod }}
