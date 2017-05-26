@@ -22,7 +22,12 @@
     - clang
     - vim
 
+- name: Setup Bash profile
+  template: src=bash_profile.j2 dest=/home/ubuntu/.bash_profile
+            owner=ubuntu group=ubuntu mode=0644
+
 - name: Cloning SourceMod repository
   git: repo=https://github.com/alliedmodders/sourcemod.git
        dest=/home/ubuntu/sourcemod
        version={{ sourcemod }}
+       depth=1
