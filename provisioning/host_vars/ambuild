@@ -2,4 +2,14 @@
 
 hostname: ambuild
 
-sourcemod: 1.8-dev
+packages:
+  - clang
+  - git
+  - lib32stdc++-5-dev
+  - lib32z1-dev
+  - libc6-dev-i386
+  - python3-pip
+  - python3-setuptools
+  - vim
+
+sourcemod: 1.10-dev

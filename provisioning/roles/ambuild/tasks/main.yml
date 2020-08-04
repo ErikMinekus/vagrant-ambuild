@@ -1,9 +1,5 @@
 ---
 
-- name: Installing Python 2.7
-  raw: test -e /usr/bin/python || (apt update -y && apt install -y python-minimal)
-  become: true
-
 - name: Set hostname
   hostname: name={{ hostname }}
   become: true
@@ -13,21 +9,25 @@
   become: true
 
 - name: Installing base packages
-  apt: state=latest name={{ item }}
+  apt: state=latest name={{ packages }}
   become: true
-  with_items:
-    - git
-    - gcc
-    - g++
-    - clang
-    - vim
 
 - name: Setup Bash profile
-  template: src=bash_profile.j2 dest=/home/ubuntu/.bash_profile
-            owner=ubuntu group=ubuntu mode=0644
+  template: src=bash_profile.j2 dest=/home/vagrant/.bash_profile
+            owner=vagrant group=vagrant mode=0644
 
 - name: Cloning SourceMod repository
   git: repo=https://github.com/alliedmodders/sourcemod.git
-       dest=/home/ubuntu/sourcemod
+       dest=/home/vagrant/sourcemod
        version={{ sourcemod }}
        depth=1
+
+- name: Cloning AMBuild repository
+  git: repo=https://github.com/alliedmodders/ambuild.git
+       dest=/home/vagrant/ambuild
+       depth=1
+  register: ambuild_repo
+
+- name: Installing AMBuild
+  command: python3 -m pip install --user /home/vagrant/ambuild
+  when: ambuild_repo.changed
